@@ -27,17 +27,22 @@ def elementos_linea(string:str):
     
     
     
-
+lista_grande=[]
 while linea != "":
     
     lista=elementos_linea(linea)
-    
-    print(lista)
-    #sí hay una variable
-    if "defVar" in linea:
-        pass
-        #print(elemento_despues_espacio(linea))
+    lista_grande+=lista
+    for i in range(lista_grande):
+        elemento=lista_grande[i]
+        #sí hay una variable
+        if "defVar" ==elemento:
+            nom_variable = lista_grande[i+1]
+            valor= lista_grande[i+2]
+            variables[nom_variable]=valor
+        #print(elemen   ,   to_despues_espacio(linea))
         #print(elemento_despues_espacio(linea[len("defVar"):]))
         
+    
+    
     
     linea = text_file.readline()
