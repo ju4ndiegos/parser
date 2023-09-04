@@ -32,11 +32,14 @@ while linea != "":
     
     lista=elementos_linea(linea)
     lista_grande+=lista
-    
     linea = text_file.readline()
-    
-for i in range(lista_grande):
+funcionando=True
+i=0
+while funcionando:
     elemento=lista_grande[i]
+    
+    
+    
     #sí hay una variable
     if "defVar" == elemento:
         nom_variable = lista_grande[i+1]
@@ -44,12 +47,16 @@ for i in range(lista_grande):
         variables[nom_variable]=valor
             
         lista_grande.pop(i)
-        lista_grande.pop(i+1)
-        lista_grande.pop(i+2)
-        #print(elemen   ,   to_despues_espacio(linea))
-        #print(elemento_despues_espacio(linea[len("defVar"):]))
+        lista_grande.pop(i)
+        lista_grande.pop(i)
         
+        i-=1
+        
+    i+=1
     
+    if i == len(lista_grande):
+        funcionando=False
     
+print(variables)
     
     
