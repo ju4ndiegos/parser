@@ -38,8 +38,6 @@ i=0
 while funcionando:
     elemento=lista_grande[i]
     
-    
-    
     #sí hay una variable
     if "defVar" == elemento:
         nom_variable = lista_grande[i+1]
@@ -52,11 +50,17 @@ while funcionando:
         
         i-=1
         
+    if elemento=="defProc":
+        nom_proc = lista_grande[i+1]
+        parametros= lista_grande[i+2]#TODO revisar los parametros
+        variables[nom_variable]=valor
+        
+    
+    #paso para recorrer la lista 
     i+=1
     
     if i == len(lista_grande):
         funcionando=False
     
-print(variables)
     
     
