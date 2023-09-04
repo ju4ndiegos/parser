@@ -8,36 +8,36 @@ linea = text_file.readline()
 
 variables = {}
 
-def elemento_despues_espacio(string):
+def elementos_linea(string:str):
     """Entran strings como por ejemplo "defVar nom 0" o " defVar ..." y me devuelve defVar
     """
-    
-    elemento="";
+    string=string.replace("\n","")
+    lista=[]
+    elemento=""
     
     for i in string:
         if i!=" ":
             elemento+=i
-        else:
+        if i==" " or i==string[-1]:
             if elemento!="":
-                return elemento
+                lista.append(elemento)
+                elemento=""
+    
+    return lista
     
     
     
 
 while linea != "":
     
+    lista=elementos_linea(linea)
+    
+    print(lista)
     #sí hay una variable
     if "defVar" in linea:
-        
-        print(elemento_despues_espacio(linea))
-        print(elemento_despues_espacio(linea[len("defVar"):]))
-        ubicacion = linea.find("defVar")
-        indice_nombre_variable = ubicacion+7
-        
-        despues_variable=linea[indice_nombre_variable:]
-        espacio_despues_variable= despues_variable.find(" ")
-        
-        nombre_variable= despues_variable[:espacio_despues_variable]
+        pass
+        #print(elemento_despues_espacio(linea))
+        #print(elemento_despues_espacio(linea[len("defVar"):]))
         
     
     linea = text_file.readline()
