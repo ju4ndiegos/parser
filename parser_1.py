@@ -8,9 +8,9 @@ text_file=open(archivo)
 
 #Estructuras contención
 class Block:
-    block=""
-    def Block(self,block:str):
-        self.block=block
+    block=[]
+    def __init__(self,blocklist):
+        self.block = blocklist.copy()
 variables = {}
 procedimientos ={}
 #-----------------------
@@ -51,7 +51,7 @@ def sacar_parametros(sublista:list,Error:bool):
 
 def sacar_bloques(sublista:list,Error:bool): 
     bloque=""
-    
+    bloque_formar=[]
     
     i=0
     buscando=True
@@ -61,14 +61,34 @@ def sacar_bloques(sublista:list,Error:bool):
             dentro_bloque=True
         elif dentro_bloque:
             bloque+=sublista[i].replace("{","").replace("}","")
-            if "}"in sublista[i]:
+            if "}"in sublista[i-1]:
                 dentro_bloque=False
                 buscando=False
+                print(sublista[i])
+            if "{" in sublista[i]:
+                print("Entra")
+                bloque_formar.append(bloque)
+                bloque=""
+                nueva_sublista=sublista[i:]
+                iteraciones,bloque_interno=sacar_bloques(nueva_sublista,Error)
+                
+                i+=iteraciones
+                bloque_formar.append(bloque_interno)
+                print(bloque_interno.block)
+                print(sublista[i:])
+                input("Alto")
+                
+                
+                
+                
+                
         i+=1
         if i == len(sublista)-1:
             buscando=False
             Error=True
-    return i-1,bloque
+            
+            
+    return i-1,Block(bloque_formar)
 
 #---------lectura archivo---------------
 linea = text_file.readline()
