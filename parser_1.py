@@ -1,19 +1,20 @@
+#Estructuras contención
+from Conditional import *
+from Loop import *
+from Repeat import * 
+
+variables = {}
+procedimientos ={}
+#-----------------------
+
+
+
 #---leer el archivo----------
 archivo = "prueba.txt"
 
 text_file=open(archivo)
 #-------------------------
 
-
-
-#Estructuras contención
-class Block:
-    block=""
-    def Block(self,block:str):
-        self.block=block
-variables = {}
-procedimientos ={}
-#-----------------------
 
 def elementos_linea(string:str):
     """Entran strings como por ejemplo "defVar nom 0" o " defVar ..." y me devuelve defVar
@@ -47,7 +48,7 @@ def sacar_parametros(sublista:list,Error:bool):
     else:
         Error=False
             
-    return iteraciones,parametros
+    return iteraciones,parametros,Error
 
 def sacar_bloques(sublista:list,Error:bool): 
     bloque=""
@@ -68,7 +69,7 @@ def sacar_bloques(sublista:list,Error:bool):
         if i == len(sublista)-1:
             buscando=False
             Error=True
-    return i-1,bloque
+    return i-1,bloque,Error
 
 #---------lectura archivo---------------
 linea = text_file.readline()
@@ -106,8 +107,8 @@ while funcionando and Error==False:
         
     if elemento=="defProc":
         nom_proc = lista_grande[i+1]
-        i1,parametros= sacar_parametros(lista_grande[i+2:],Error)
-        i2,block_commands=sacar_bloques(lista_grande[i+3:],Error)
+        i1,parametros,Error= sacar_parametros(lista_grande[i+2:],Error)
+        i2,block_commands,Error=sacar_bloques(lista_grande[i+3:],Error)
         procedimientos[nom_proc]=[parametros,block_commands]
         for _ in range(i1+i2):
             print("elimino ->",lista_grande.pop(i))
@@ -129,5 +130,5 @@ while funcionando and Error==False:
 
 #pruebas----------------    
 #print(procedimientos)
-print("Hubo un error ->"+Error)
+print("Hubo un error ->"+str(Error))
 
