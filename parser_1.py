@@ -30,7 +30,7 @@ def elementos_linea(string:str):
             elemento+=i        
         if i==" " or i==string[-1]:
             if elemento!="":
-                lista.append(elemento)
+                lista.append(elemento.lower())
                 elemento=""
     
     return lista
@@ -42,13 +42,18 @@ def sacar_parametros(sublista:list,Error:bool):
         for i in sublista:
             iteraciones+=1
             
-            parametros.append(i.replace("(","").replace(")",""))
+            parametro=i.replace("(","").replace(")","")
+            if parametro in simbolos_reservados:
+                Error=True
+                break
+            else:
+                parametros.append(parametro)
             if ")"in i:
                 if i==")" or i=="(":
                     parametros.pop(-1)
                 break
     else:
-        Error=False
+        Error=True
             
     return iteraciones,parametros,Error
 
@@ -71,7 +76,7 @@ def sacar_bloques(sublista:list,Error:bool):
                     dentro_bloque=False
                     buscando=False
         i+=1
-        if i == len(sublista)-1:
+        if i == len(sublista) and buscando==True:
             buscando=False
             Error=True
     return i-1,bloque,Error
@@ -86,7 +91,7 @@ while linea != "":
     linea = text_file.readline()
 #------------------------------------
 
-simbolos_reservados=["while",";","defVar","defProc","="]
+simbolos_reservados=["while",";","defVar","defProc","=","{","}","(",")"]
 
 
 #----------------parser-----------
@@ -110,7 +115,7 @@ while funcionando and Error==False:
         
         i-=1
         
-    if elemento=="defProc":
+    elif elemento=="defProc":
         nom_proc = lista_grande[i+1]
         i1,parametros,Error= sacar_parametros(lista_grande[i+2:],Error)
         i2,block_str,Error=sacar_bloques(lista_grande[i+3:],Error)
@@ -119,15 +124,27 @@ while funcionando and Error==False:
         procedimientos[nom_proc]=[parametros,block_commands]
         for _ in range(i1+i2):
             lista_grande.pop(i)
+            
+        if nom_proc in simbolos_reservados:
+            Error=True
         
         i-=1
             
-    if elemento=="{":
-        i2,block_str,Error=sacar_bloques(lista_grande[i:],Error)
+    elif elemento=="{"  or "{" in elemento:
+        it,block_str,Error=sacar_bloques(lista_grande[i:],Error)
         bloques_libres.append(Block(block_str))
+        
+        for _ in range(it):
+            lista_grande.pop(i)
+        i-=1
+    
+    else:
+        print(i)
+        print(elemento)
         
     #paso para recorrer la lista 
     i+=1
+    
     
     if i == len(lista_grande):
         funcionando=False

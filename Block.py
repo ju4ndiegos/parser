@@ -6,6 +6,7 @@ class Block:
 
     def detect_block_type(self):
         if self.block_string.startswith("if"):
+            
             return "conditional"
         elif self.block_string.startswith("while"):
             return "loop"
