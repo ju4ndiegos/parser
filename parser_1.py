@@ -2,9 +2,11 @@
 from Conditional import *
 from Loop import *
 from Repeat import * 
+from Block import *
 
 variables = {}
 procedimientos ={}
+bloques_libres=[]
 #-----------------------
 
 
@@ -53,18 +55,21 @@ def sacar_parametros(sublista:list,Error:bool):
 def sacar_bloques(sublista:list,Error:bool): 
     bloque=""
     
-    
+    numero_llaves=0
     i=0
     buscando=True
     dentro_bloque=False
     while buscando:
         if "{" in sublista[i]:
             dentro_bloque=True
+            numero_llaves+=1
         elif dentro_bloque:
             bloque+=sublista[i].replace("{","").replace("}","")
             if "}"in sublista[i]:
-                dentro_bloque=False
-                buscando=False
+                numero_llaves-=1
+                if numero_llaves==0:
+                    dentro_bloque=False
+                    buscando=False
         i+=1
         if i == len(sublista)-1:
             buscando=False
@@ -108,24 +113,26 @@ while funcionando and Error==False:
     if elemento=="defProc":
         nom_proc = lista_grande[i+1]
         i1,parametros,Error= sacar_parametros(lista_grande[i+2:],Error)
-        i2,block_commands,Error=sacar_bloques(lista_grande[i+3:],Error)
+        i2,block_str,Error=sacar_bloques(lista_grande[i+3:],Error)
+        
+        block_commands=Block(block_str)
         procedimientos[nom_proc]=[parametros,block_commands]
         for _ in range(i1+i2):
-            print("elimino ->",lista_grande.pop(i))
+            lista_grande.pop(i)
         
         i-=1
             
     if elemento=="{":
-        print(lista_grande[i:])
-        input("->")
+        i2,block_str,Error=sacar_bloques(lista_grande[i:],Error)
+        bloques_libres.append(Block(block_str))
         
-    
     #paso para recorrer la lista 
     i+=1
     
     if i == len(lista_grande):
         funcionando=False
-    
+
+
 #--------------------------------------
 
 #pruebas----------------    
